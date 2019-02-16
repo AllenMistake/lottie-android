@@ -34,11 +34,16 @@ class KeyframesParser {
 
             if (reader.peek() == JsonToken.NUMBER) {
               // For properties in which the static value is an array of numbers.
-              keyframes.add(
-                  KeyframeParser.parse(reader, composition, scale, valueParser, false));
+              Keyframe<T> keyframe = KeyframeParser.parse(reader, composition, scale, valueParser, false);
+              if (keyframe.startValue != null) {
+                keyframes.add(keyframe);
+              }
             } else {
               while (reader.hasNext()) {
-                keyframes.add(KeyframeParser.parse(reader, composition, scale, valueParser, true));
+                Keyframe<T> keyframe = KeyframeParser.parse(reader, composition, scale, valueParser, true);
+                if (keyframe.startValue != null) {
+                  keyframes.add(keyframe);
+                }
               }
             }
             reader.endArray();
